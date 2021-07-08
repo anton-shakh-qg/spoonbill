@@ -41,16 +41,6 @@ jobs:
       #       pull_sources: false
       #       push_translations: false
       #       push_sources: true
-      - run: |
-              sudo chown $(whoami) -R  spoonbill/locales/
-              pybabel compile -f -D spoonbill -d spoonbill/locales/
-      - name: Cache Docker layers
-        uses: actions/cache@v2
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
