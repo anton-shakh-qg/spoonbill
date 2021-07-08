@@ -2,9 +2,6 @@ name: push
 on:
   workflow_dispatch:
   push:
-    branches:
-       - master
-       - main
     tags:
        - '*'
 
@@ -51,6 +48,8 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.PAT }}
+      - name: Set env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
@@ -60,7 +59,7 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
           tags: |
-            ghcr.io/${{ github.repository_owner }}/spoonbill:latest
+            ghcr.io/${{ github.repository_owner }}/spoonbill:${{ env.RELEASE_VERSION }}
       - name: Move cache
         run: |
           rm -rf /tmp/.buildx-cache
