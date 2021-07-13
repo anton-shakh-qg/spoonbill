@@ -1,4 +1,4 @@
-name: push
+name: push_tag
 on:
   workflow_dispatch:
   push:
